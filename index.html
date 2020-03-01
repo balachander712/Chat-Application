@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="styles/index.css">
+</head>
+<title>Testing</title>
+
+
+  <body>
+    <div id="login-area">
+      <div id="login-text"><h1>Login Page</h1></div>
+      <div id="login-form-area">
+        <form id="login-form">
+          <input id="username" type="text" placeholder="Username" autocomplete="off">
+          <input id="login-submit" type="submit" value="Login">
+        </form>
+      </div>
+    </div>
+
+
+    <div id="chat-area">
+      <div id="user-area">
+        <div id="online-users-text">
+          <h1>Online Users:</h1>
+        </div>
+        <div id="online-users">
+          <ul id="users">
+        </div>
+      </div>
+      <div id="message-area">
+        <div id="display-message-area">
+          <ul id="messages"><li>Testing</li><li>Testing</li><li>Testing</li><li>Testing</li></ul>
+        </div>
+        <div id="message-form-area">
+          <form id="message-form">
+            <input id="message" type="text" placeholder="Type your Message..." autocomplete="off">
+            <input type="submit" id="message-submit" value="Send">
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+
+  <script type="text/javascript">
+    var socket=io();
+
+    function updateUsers(list){
+      for(var i=0; i<list.length;i++){
+        $("#users").append("<li><b>" + list[i] + "</b></li>");
+      }
+    }
+
+   $("#login-form").submit(function(event){
+     event.preventDefault();
+     if($("#username").val()=="" || $("#username").val()==" "){
+          alert("Invalid Username")
+     }
+     else{
+          $username=$("username").val();
+          $("#login-area").hide();
+          $("#chat-area").show();
+
+          socket.emit("has connected",$username);
+     }
+   });
+   socket.on("has connected",function(data){
+     $("#users").html("");
+     updateUsers(data.usersList);
+     $("#messages").append("<li><i><b>" + data.username+"</b> has connected</i></li>")
+   });
+
+   socket.on("has disconnected",function(data){
+     $("#users").html("");
+     updateUsers(data.usersList);  
+     $("#messages").append("<li><i><b>" + data.username+"</b> has disconnected</i></li>")
+   });
+  </script>
+
+
+</html>

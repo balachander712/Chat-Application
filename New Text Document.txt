@@ -1,0 +1,13 @@
+ <div id="chat-area">
+      <div id="user-area">
+        <div id="online-users-text">
+          <h1>Online Users:</h1>
+        </div>
+        <div id="online-users">
+          <ul id="users"><li>Balachander</li><li>Balachander</li>
+        </div>
+      </div>
+      <div id="message-area">
+
+      </div>
+    </div>
